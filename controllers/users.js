@@ -14,7 +14,7 @@ module.exports.signup = async (req, res) => {
                 return next(err);
             }
             req.flash("success", "Welcome to Airbnb");
-            res.redirect("/listings");
+            res.redirect("/");
         });
     }catch(e){
         req.flash("error", e.message);
@@ -28,7 +28,7 @@ module.exports.renderLoginForm = (req, res) => {
 
 module.exports.login = async(req, res) => {
     req.flash("success", "Welcome back to Airbnb! ");
-    res.redirect(res.locals.redirectUrl || "/listings");
+    res.redirect(res.locals.redirectUrl || "/");
 };
 
 module.exports.logout = (req, res, next) => {
@@ -37,6 +37,6 @@ module.exports.logout = (req, res, next) => {
             return next(err);
         }
         req.flash("success", "You have been logged out!");
-        res.redirect("/listings");
+        res.redirect("/");
     });
 };

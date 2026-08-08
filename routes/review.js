@@ -7,13 +7,15 @@ const Review = require("../models/review.js");
 const {
     validateReview,
     isLoggedIn,
-    isReviewAuthor
+    isReviewAuthor,
+    validateObjectId
     } = require("../middleware.js");
 
 const reviewController = require("../controllers/reviews.js");
 
 //Post Route
 router.post("/", 
+    validateObjectId,
     isLoggedIn,
     validateReview, 
     wrapAsync(reviewController.createReview)
@@ -21,6 +23,7 @@ router.post("/",
 
 // Delete Route
 router.delete("/:reviewId", 
+    validateObjectId,
     isLoggedIn,
     isReviewAuthor,
     wrapAsync(reviewController.destroyReview)

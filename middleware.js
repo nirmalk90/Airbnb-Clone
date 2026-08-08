@@ -1,5 +1,6 @@
 const Listing = require("./models/listing");
 const Review = require("./models/review");
+const mongoose = require("mongoose");
 const {listingSchema, reviewSchema} = require("./schema.js");
 const ExpressError = require("./utils/ExpressError.js");
 
@@ -10,7 +11,14 @@ module.exports.isLoggedIn = (req, res, next) => {
         return res.redirect("/login");
     }
     next();
-}
+};
+
+module.exports.validateObjectId = (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return next(new ExpressError(404, "Listing not found"));
+    }
+    next();
+};
 
 module.exports.saveRedirectUrl = (req, res, next) => {
     if (req.session.redirectUrl){
@@ -24,7 +32,7 @@ module.exports.isOwner = async (req, res, next) => {
     let listing = await Listing.findById(id).populate("owner");
     if (!listing.owner.equals(res.locals.currUser._id)){
         req.flash("error", "You are not the owner of this listing!");
-        return res.redirect(`/listings/${listing._id}`);
+        return res.redirect(`/${listing._id}`);
     }
     next();
 };
@@ -55,7 +63,7 @@ module.exports.isReviewAuthor = async (req, res, next) => {
     let review = await Review.findById(reviewId);
     if (!review.author.equals(res.locals.currUser._id)){
         req.flash("error", "You are not the author of this review!");
-        return res.redirect(`/listings/${id}`);
+        return res.redirect(`/${id}`);
     }
     next();
 };

@@ -127,9 +127,8 @@ body{
     margin-bottom: 2rem;
 }
 
-/* ==========================================
-   Dark Mode System Settings
-   ========================================== */
+/* Dark Mode System Settings */
+
 html.dark-mode {
     background-color: #121212;
 }

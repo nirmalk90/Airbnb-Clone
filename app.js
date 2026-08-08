@@ -83,9 +83,9 @@ app.use((req, res, next) => {
 });
 
 
-app.use("/listings", listingRouter);
-app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use("/:id/reviews", reviewRouter);
+app.use("/", listingRouter);
 
 app.all("/*splat", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
