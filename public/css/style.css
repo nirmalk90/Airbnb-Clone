@@ -115,3 +115,138 @@ body{
     padding-left: 0;
     padding-right: 0;
 }
+
+/* Map Style */
+#map {
+    height: 350px;
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* ==========================================
+   Dark Mode System Settings
+   ========================================== */
+html.dark-mode {
+    background-color: #121212;
+}
+
+html.dark-mode body {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+html.dark-mode .navbar {
+    background-color: #1e1e1e !important;
+    border-bottom: 1px solid #2d2d2d !important;
+}
+
+html.dark-mode .nav-link {
+    color: #e0e0e0 !important;
+}
+
+html.dark-mode .navbar-brand {
+    color: #f5f5f5 !important;
+}
+
+html.dark-mode .search-input {
+    background-color: #2b2b2b !important;
+    color: #e0e0e0 !important;
+    border-color: #444 !important;
+}
+
+html.dark-mode .search-input::placeholder {
+    color: #999 !important;
+}
+
+html.dark-mode .card {
+    background-color: #1e1e1e !important;
+    border: 1px solid #2d2d2d !important;
+}
+
+html.dark-mode .card-body {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+}
+
+html.dark-mode .listing-link {
+    color: #e0e0e0 !important;
+}
+
+html.dark-mode .tax-toggle {
+    border-color: #444 !important;
+    color: #e0e0e0 !important;
+}
+
+html.dark-mode .filter {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+    border: 1px solid #2d2d2d !important;
+}
+
+html.dark-mode .filter:hover {
+    background-color: #2b2b2b !important;
+}
+
+html.dark-mode .filter.active {
+    background-color: #2b2b2b !important;
+    border-color: #fe424d !important;
+}
+
+html.dark-mode .f-info {
+    background-color: #161616 !important;
+    color: #999 !important;
+    border-top: 1px solid #2d2d2d !important;
+}
+
+html.dark-mode .f-info-links a {
+    color: #aaa !important;
+}
+
+html.dark-mode .f-info-links a:hover {
+    color: #fe424d !important;
+}
+
+html.dark-mode input.form-control,
+html.dark-mode textarea.form-control,
+html.dark-mode select.form-select {
+    background-color: #1e1e1e !important;
+    color: #e0e0e0 !important;
+    border-color: #3d3d3d !important;
+}
+
+html.dark-mode input.form-control:focus,
+html.dark-mode textarea.form-control:focus,
+html.dark-mode select.form-select:focus {
+    background-color: #252525 !important;
+    color: #ffffff !important;
+    border-color: #fe424d !important;
+    box-shadow: 0 0 0 0.25rem rgba(254, 66, 77, 0.25) !important;
+}
+
+html.dark-mode .btn-outline-dark {
+    color: #e0e0e0 !important;
+    border-color: #e0e0e0 !important;
+}
+
+html.dark-mode .btn-outline-dark:hover {
+    background-color: #e0e0e0 !important;
+    color: #121212 !important;
+}
+
+html.dark-mode hr {
+    border-color: #3d3d3d !important;
+    opacity: 0.5;
+}
+
+html.dark-mode .starability-slot label {
+    color: #e0e0e0 !important;
+}
+
+html.dark-mode #map {
+    border-color: #3d3d3d !important;
+    filter: invert(90%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}

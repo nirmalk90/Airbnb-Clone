@@ -18,12 +18,22 @@
         background-color: #f8f9fa;
         cursor: pointer;
         opacity: 0.7;
+        transition: all 0.2s ease-in-out;
     }
     .filter:hover {
         opacity: 1;
+        background-color: #f1f3f5;
+    }
+    .filter.active {
+        opacity: 1;
+        border: 2px solid #fe424d;
+        background-color: #e9ecef;
+        font-weight: bold;
     }
     .filter p{
         font-size: 0.8rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0;
     }
     .tax-info {
         display: none;
@@ -40,42 +50,66 @@
 </style>
 
 <div id="filters" class="mt-3">
-    <div class="filter">
-        <div><i class="fa-solid fa-fire"></i></div>
-        <p>Trending</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-solid fa-bed"></i></div>
-        <p>Rooms</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-solid fa-mountain-city"></i></div>
-        <p>Iconic Cities</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-solid fa-mountain"></i></div>
-        <p>Mountains</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-brands fa-fort-awesome"></i></div>
-        <p>Castles</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-solid fa-person-swimming"></i></div>
-        <p>Amazing Pools</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-solid fa-campground"></i></div>
-        <p>Camping</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-solid fa-cow"></i></div>
-        <p>Farms</p>
-    </div>
-    <div class="filter">
-        <div><i class="fa-solid fa-snowflake"></i></div>
-        <p>Arctic</p>
-    </div>
+    <a href="/listings" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === '' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-compass"></i></div>
+            <p>All</p>
+        </div>
+    </a>
+    <a href="/listings?category=Trending" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Trending' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-fire"></i></div>
+            <p>Trending</p>
+        </div>
+    </a>
+    <a href="/listings?category=Rooms" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Rooms' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-bed"></i></div>
+            <p>Rooms</p>
+        </div>
+    </a>
+    <a href="/listings?category=Iconic Cities" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Iconic Cities' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-mountain-city"></i></div>
+            <p>Iconic Cities</p>
+        </div>
+    </a>
+    <a href="/listings?category=Mountains" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Mountains' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-mountain"></i></div>
+            <p>Mountains</p>
+        </div>
+    </a>
+    <a href="/listings?category=Castles" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Castles' ? 'active' : '' %>">
+            <div><i class="fa-brands fa-fort-awesome"></i></div>
+            <p>Castles</p>
+        </div>
+    </a>
+    <a href="/listings?category=Amazing Pools" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Amazing Pools' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-person-swimming"></i></div>
+            <p>Pools</p>
+        </div>
+    </a>
+    <a href="/listings?category=Camping" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Camping' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-campground"></i></div>
+            <p>Camping</p>
+        </div>
+    </a>
+    <a href="/listings?category=Farms" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Farms' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-cow"></i></div>
+            <p>Farms</p>
+        </div>
+    </a>
+    <a href="/listings?category=Arctic" style="text-decoration: none; color: inherit;">
+        <div class="filter <%= selectedCategory === 'Arctic' ? 'active' : '' %>">
+            <div><i class="fa-solid fa-snowflake"></i></div>
+            <p>Arctic</p>
+        </div>
+    </a>
     <div class="tax-toggle">
         <div class="form-check-reverse form-switch ">
             <input 

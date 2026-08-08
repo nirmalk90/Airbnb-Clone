@@ -30,7 +30,9 @@ main()
     })
 
 async function main() {
-    await mongoose.connect(dbUrl);
+    await mongoose.connect(dbUrl, {
+        tlsAllowInvalidCertificates: true
+    });
 }
 
 app.set("view engine", "ejs");
@@ -91,8 +93,10 @@ app.all("/*splat", (req, res, next) => {
 
 app.use((err,req,res,next) => {
     let {statusCode = 500, message="Something went wrong"} = err;
+    res.locals.currUser = req.user || null;
+    res.locals.success = req.flash ? req.flash("success") : [];
+    res.locals.error = req.flash ? req.flash("error") : [];
     res.status(statusCode).render("error.ejs", {message});
-    // res.status(statusCode).send(message);
 })
 
 app.listen(8080, () => {

@@ -37,10 +37,11 @@
             <a class="nav-link" href="/listings">Explore</a>
         </div>
         <div class="navbar-nav ms-auto">
-            <form class="d-flex" role="search">
+            <form class="d-flex" role="search" method="GET" action="/listings">
                 <input class="form-control me-2 search-input" 
                     type="search" 
                     placeholder="Search Destinations" 
+                    name="q"
                 />
                 <button 
                     class="btn search-btn" 
@@ -49,9 +50,14 @@
                 </button>
             </form>
         </div>
-        <div class="navbar-nav ms-auto">
+        <div class="navbar-nav ms-auto align-items-center d-flex flex-row gap-3">
+            <div class="nav-item">
+                <button id="theme-toggle" class="btn btn-link nav-link p-0 border-0" aria-label="Toggle dark mode" style="outline: none; box-shadow: none; cursor: pointer;">
+                    <i id="theme-icon" class="fa-solid fa-moon fs-5"></i>
+                </button>
+            </div>
             <a class="nav-link" href="/listings/new">Airbnb your home</a>
-            <% if(!currUser){ %>
+            <% if(typeof currUser === 'undefined' || !currUser){ %>
                 <a class="nav-link" href="/signup"><b>Sign Up</b></a>
                 <a class="nav-link" href="/login"><b>Login</b></a>
             <% } else { %>
