@@ -1,3 +1,11 @@
+# .env is ignored on purpose — see .env.example for the required keys
 .env
+.env.*
+!.env.example
 
 node_modules/
+
+# logs & OS noise
+npm-debug.log*
+yarn-error.log*
+.DS_Store
