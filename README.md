@@ -98,27 +98,84 @@ Airbnb Clone/
 
 ## ⚙️ Environment Variables Setup
 
-Before running the application, create a `.env` file in the root directory of the project and populate it with the following configuration details:
+Configuration is read from the process environment first, then from a local `.env` file. The `.env` file is loaded in **every** environment (production included) so a stray `NODE_ENV` can never leave the app without credentials — and real environment variables always take precedence over the file.
+
+Copy the template and fill in the values:
+
+```bash
+cp .env.example .env
+```
 
 ```env
-# Cloudinary Credentials (for listing image uploads)
+# Required
+ATLASDB_URL=mongodb://127.0.0.1:27017/wanderlust   # or a MongoDB Atlas connection string
+SECRET=your_session_encryption_secret_phrase        # long random string
+
+# Optional — required only for image uploads
 CLOUD_NAME=your_cloudinary_cloud_name
 CLOUD_API_KEY=your_cloudinary_api_key
 CLOUD_API_SECRET=your_cloudinary_api_secret
 
-# MongoDB Connection String (Local or Atlas)
-ATLASDB_URL=mongodb://127.0.0.1:27017/wanderlust
-
-# Session Secret (For express-session encryption)
-SECRET=your_session_encryption_secret_phrase
+# Optional
+PORT=8080                # hosting platforms inject this automatically
+NODE_ENV=production      # set by most hosting platforms
 ```
+
+The app validates this configuration at boot and **fails fast** with an actionable message instead of crashing later:
+
+| Situation | Behaviour |
+| --- | --- |
+| `ATLASDB_URL` / `SECRET` missing | Prints `Missing required environment variable(s)`, exits `1` |
+| `ATLASDB_URL` still contains `<password>` / `[user]` | Refused with a placeholder warning, exits `1` |
+| MongoDB unreachable | Prints a single `[fatal] Failed to start` line (no raw driver stack trace), exits `1` — the deploy turns red instead of serving 500s |
+| Cloudinary keys missing | Warns at boot; the app still runs, uploads return a readable `503` |
+
+---
+
+## 🔁 Deployment
+
+The app is deploy-agnostic: it reads `process.env.PORT`, binds to `0.0.0.0`, loads `.env` from its own directory (not the cwd), trusts one proxy hop for secure cookies in production, and exits non-zero if it cannot reach MongoDB.
+
+### Render (blueprint included)
+
+`render.yaml` is committed, so you can use **New → Blueprint** and just fill in the secrets. Or create the service manually:
+
+| Setting | Value |
+| --- | --- |
+| Build command | `npm ci` |
+| Start command | `npm start` |
+| Health check path | `/healthz` |
+| Environment | `ATLASDB_URL`, `SECRET`, `CLOUD_NAME`, `CLOUD_API_KEY`, `CLOUD_API_SECRET` |
+
+### Railway / Heroku / Fly / VPS
+
+- **Railway:** deploy the repo, add the variables above; `PORT` is injected automatically.
+- **Heroku:** `Procfile` is included (`web: node app.js`).
+- **Fly/VPS:** run `npm ci --omit=dev && npm start` with the same variables exported.
+
+### MongoDB Atlas checklist
+
+1. Create a cluster and a database user.
+2. **Network Access** → add `0.0.0.0/0` (or the host's static egress IP if you have one). This is the single most common cause of a deploy that starts but every page fails.
+3. Copy the connection string into `ATLASDB_URL` (keep the `/wanderlust` database name).
+4. Optionally seed once: `npm run seed` from a machine that can reach the cluster.
+
+### Health check
+
+`GET /healthz` returns `200` when the MongoDB connection is up, otherwise `503`:
+
+```json
+{ "status": "ok", "db": "connected", "uptime": 42 }
+```
+
+Use it as the platform health-check path and for uptime monitoring.
 
 ---
 
 ## 🚀 Getting Started
 
 ### 1. Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) (recommended version: v24.15.0 or stable LTS) and [MongoDB](https://www.mongodb.com/) installed and running on your system.
+Make sure you have [Node.js](https://nodejs.org/) (Node.js 22 or newer — `engines` is `>=22`, `.nvmrc` pins 22) and [MongoDB](https://www.mongodb.com/) installed and running on your system.
 
 ### 2. Install Dependencies
 Navigate into your project folder and run:
@@ -131,19 +188,30 @@ To populate your MongoDB database with the initial mock listings:
 ```bash
 npm run seed
 ```
-*(Note: If you run into issues on older Node versions, you can use `npm run seed:legacy`)*
+If the database has no users yet, the seed script creates a demo owner (`SEED_USERNAME` / `SEED_PASSWORD` / `SEED_EMAIL` env vars, defaulting to `demo` / `wanderlust123`) so every listing has a real owner.
 
 ### 4. Start the Application
-To launch the local development server:
 ```bash
 npm start
 ```
-*(Note: If you run into compatibility or TLS issues on older Node versions, you can use `npm run start:legacy`)*
+The server starts only after MongoDB is reachable, and listens on `PORT` (default `8080`):
+
+```
+Connected to MongoDB (mongoose)
+Connected to MongoDB (session store)
+Server is running on port 8080 (NODE_ENV=development)
+```
 
 Once started, open your web browser and navigate to:
 ```
 http://localhost:8080
 ```
+
+### 5. Run the tests
+```bash
+npm test
+```
+The suite boots the app and covers routing/rendering (including `/healthz` and the 404 page) plus the startup guards: missing variables, placeholder connection strings, and an unreachable database all exit non-zero without opening a port. No MongoDB instance is required.
 
 ---
 

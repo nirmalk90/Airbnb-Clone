@@ -1,17 +1,15 @@
 {
   "engines": {
-    "node": "24.15.0"
+    "node": ">=22"
   },
   "name": "wanderlust",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node --tls-cipher-list=DEFAULT@SECLEVEL=1 app.js",
-    "start:legacy": "node --openssl-legacy-provider app.js",
-    "seed": "node --tls-cipher-list=DEFAULT@SECLEVEL=1 init/index.js",
-    "seed:legacy": "node --openssl-legacy-provider init/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node app.js",
+    "seed": "node init/index.js",
+    "test": "node --test --test-force-exit tests/*.test.js"
   },
   "keywords": [],
   "author": "",
